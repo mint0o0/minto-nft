@@ -84,6 +84,8 @@ contract MyNFT is ERC721URIStorage, Ownable {
         tokenIds.increment();
     }
 
+
+    
     // not use
     /// @dev fetches NFT magazines that a specific user has created
     /// @return nftStruct[] list of nfts created by a user with their metadata
@@ -139,5 +141,22 @@ contract MyNFT is ERC721URIStorage, Ownable {
         return tokenId;
     }
 
-    
+    function getNftsCount() public view returns(uint256){
+        return tokenIds.current();
+    }
+
+    function createAndSendNft(string memory _tokenURI, string memory _title,
+            string memory _description, string memory _image, address from, address payable to) 
+        public returns(uint256){
+        uint256 newTokenId = tokenIds.current();
+        _mint(from, newTokenId);
+        _setTokenURI(newTokenId, _tokenURI);
+        nftOwners[from].push(newTokenId);
+        setNft(newTokenId, _title, _description, _tokenURI, _image);
+        tokenIds.increment();
+        
+        safeTransferFrom(from, to, newTokenId);
+        nfts[newTokenId].owner = to;
+        return newTokenId;
+    }
 }
