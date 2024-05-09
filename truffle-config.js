@@ -71,7 +71,10 @@ module.exports = {
       provider: function(){
         return new HDWalletProvider(mnemonic, `${infura_endpoint}`)
       },
+      skipDryRun: true,
       network_id: 11155111,       // sepolia's id
+    
+      disableConfirmationListner: true,
     },
     //
     // An additional network, but with some advanced options…
